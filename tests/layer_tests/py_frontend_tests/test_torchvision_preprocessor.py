@@ -214,6 +214,19 @@ def test_centercrop():
     assert np.max(np.absolute(torch_result - ov_result)) < 4e-05
 
 
+@pytest.mark.parametrize("crop_size", [(224), (200, 224), (224, 200)])
+def test_centercrop_larger_than_input(crop_size):
+    test_input = np.random.randint(255, size=(210, 210, 3), dtype=np.uint8)
+    preprocess_pipeline = transforms.Compose(
+        [
+            transforms.CenterCrop(crop_size),
+            transforms.ToTensor(),
+        ],
+    )
+    with pytest.raises(ValueError, match="CenterCrop size"):
+        _infer_pipelines(test_input, preprocess_pipeline)
+
+
 def test_grayscale():
     test_input = np.random.randint(255, size=(224, 224, 3), dtype=np.uint8)
     preprocess_pipeline = transforms.Compose([transforms.ToTensor(), transforms.Grayscale()])

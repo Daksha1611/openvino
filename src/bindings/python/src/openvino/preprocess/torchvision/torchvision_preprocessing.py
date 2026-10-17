@@ -260,7 +260,7 @@ class _(TransformConverterBase):
         target_size = _setup_size(transform.size, "Incorrect size type for CenterCrop operation")
 
         if target_size[0] > source_size[0] or target_size[1] > source_size[1]:
-            ValueError(f"CenterCrop size={target_size} is greater than source_size={source_size}")
+            raise ValueError(f"CenterCrop size={target_size} is greater than source_size={source_size}")
 
         bottom_left = []
         bottom_left.append(int((source_size[0] - target_size[0]) / 2))
